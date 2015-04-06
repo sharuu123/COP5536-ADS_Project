@@ -13,16 +13,20 @@ int main(int argc, char *argv[]){
 	
 	// Fibonacci_heap fh;
 
-	// // int arr[]={3, 6, 1, 8, 5, 11, 2, 25, 67, 4};
-	// int arr[]={91,23,23,4,5,16,27,4,19,210};
+	// int arr[]={3, 6, 1, 8, 5, 11, 2, 7, 9, 4};
+	// // int arr[]={7,4,2,7,8,1,12,8,9,10,11,23,13,56,15,16,17,18,19,20};
 	// for(int i=0;i<10;i++){
 	// 	fh.Insert(i,arr[i]);
 	// }
-	// cout << "Insertions done" << endl;
-	// // for(int i=0;i<12;i++){
-	// // 	node* n=fh.RemoveMin();
-	// // 	cout << "min val is " << n->vertex << " " << n->data << endl;
-	// // }
+
+	// fh.DecreaseKey(5,11,0);
+	// // fh.DecreaseKey(0,7,1);
+	// // fh.DecreaseKey(1,4,1);
+	// // cout << "Insertions done" << endl;
+	// for(int i=0;i<8;i++){
+	// 	node* n=fh.RemoveMin();
+	// 	cout << "min val is " << n->data << endl;
+	// }
 
 	// node* n=fh.Find(fh.root,4,5);
 	// cout << "Find " << n->vertex << " " << n->data << endl;
@@ -51,7 +55,8 @@ int main(int argc, char *argv[]){
         G[b][a]=c;
     }
 
-    cout << G[1][4] << endl;
+     // cout << G[0][170] << endl;
+
 
     vector<int> spath;
     int sval=0;

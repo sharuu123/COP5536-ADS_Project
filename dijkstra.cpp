@@ -16,34 +16,36 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 	unordered_map<int,int> prev; // map to previous node in shortest path
 	Fibonacci_heap fh;
 	vector<int> path;
-
+	int count=0;
 	for(auto i : G){			// Initialization 
 		if(i.first == src){
 			dist[i.first]=0;	// for source dist=0
 		} else {
 			dist[i.first]=INT_MAX;
 		}
-		cout << "Inserting " << i.first << " " << dist[i.first] << endl;
+		count++;
+		// cout << "Inserting " << i.first << " " << dist[i.first] << endl;
 		fh.Insert(i.first,dist[i.first]);
 	}
+	cout << "No of vertices = " << count << endl;
 
 	while(!fh.empty()){
 		node *n = fh.RemoveMin();
 		cout << "Relaxing node " << n->vertex << " " << n->data << endl;
 
-		// if(n->vertex == des){
-		// 	// find path
-		// 	int temp=des;
-		// 	// cout << temp << " ";
-		// 	while(prev[temp]!=src){
-		// 		path.insert(path.begin(),temp);
-		// 		temp=prev[temp];
-		// 		// cout << temp << " " << endl;
-		// 	}
-		// 	path.insert(path.begin(),temp);
-		// 	path.insert(path.begin(),src);
-		// 	break;
-		// }
+		if(n->vertex == des){
+			// find path
+			int temp=des;
+			// cout << temp << " ";
+			while(prev[temp]!=src){
+				path.insert(path.begin(),temp);
+				temp=prev[temp];
+				// cout << temp << " " << endl;
+			}
+			path.insert(path.begin(),temp);
+			path.insert(path.begin(),src);
+			break;
+		}
 
 		for(auto i : G[n->vertex]){
 
@@ -58,13 +60,13 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 		}
 	}
 
-	int temp=des;
-	while(prev[temp]!=src){
-		path.insert(path.begin(),temp);
-		temp=prev[temp];
-	}
-	path.insert(path.begin(),temp);
-	path.insert(path.begin(),src);
+	// int temp=des;
+	// while(prev[temp]!=src){
+	// 	path.insert(path.begin(),temp);
+	// 	temp=prev[temp];
+	// }
+	// path.insert(path.begin(),temp);
+	// path.insert(path.begin(),src);
 	
 
 	// for(int i=0;i<path.size();i++){
