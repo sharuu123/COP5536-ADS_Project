@@ -35,8 +35,8 @@ void Fibonacci_heap::Link(node* p2,node* p1){
 	p2->left->right = p2->right; // sever connections of p2
 	p2->right->left = p2->left;
 
-	if(p1->right==p1) root=p1;
-	if(p2==root) root=p1;
+	// if(p1->right==p1) root=p1;
+	// if(p2==root) root=p1;
 
 	p2->parent = p1;		// Make p1 parent of p2
 	if(p1->child == NULL){	// Insert p2 into its child circular list
@@ -54,7 +54,7 @@ void Fibonacci_heap::Link(node* p2,node* p1){
 }
 
 void Fibonacci_heap::Consolidate(){
-	// cout << "Start consolidate" << endl;
+	cout << "Start consolidate" << endl;
 	int D = 1+(int)(log(num)/log(2)); // Possible number of degrees with num elements
 	int d;
 	node* A[D];
@@ -76,7 +76,7 @@ void Fibonacci_heap::Consolidate(){
 		p1=s.top();
 		s.pop();
 		d=p1->degree;
-		// cout << "popped subtree is " << p1->data << " " << p1->degree << endl;
+		cout << "popped subtree is " << p1->data << " " << p1->degree << endl;
 		while(A[d]!=NULL){  // Check if array contains any subtree with same degree
 			node* p2=A[d];
 			if(p1->data > p2->data){
@@ -84,11 +84,11 @@ void Fibonacci_heap::Consolidate(){
 				p1 = p2;
 				p2 = temp;
 			}
-			// cout << "link " << p2->data << " " <<  p1->data << endl;
+			cout << "link " << p2->data << " " <<  p1->data << endl;
 			Link(p2,p1);	// Link subtree with root p2 to subtree with root p1
-			if(p1->right==p1){
-				root=p1;
-			}
+			// if(p1->right==p1){
+			// 	root=p1;
+			// }
 			A[d]=NULL;
 			d++;
 		}
@@ -116,18 +116,18 @@ void Fibonacci_heap::Consolidate(){
 			}
 		}
 	}
-	// node* t=root;
-	// cout << t->data << " ";
-	// while(t->right!=root){
-	// 	t = t->right;
-	// 	cout << t->data << " ";
-	// }
-	// cout << endl;
+	node* t=root;
+	cout << t->vertex << " ";
+	while(t->right!=root){
+		t = t->right;
+		cout << t->vertex << " ";
+	}
+	cout << endl;
 
 }
 
 node* Fibonacci_heap::RemoveMin(){
-	// cout << "RemoveMin" << endl;
+	cout << "RemoveMin" << endl;
 	if(root==NULL){			// If heap is empty return NULL
 		return NULL;
 	}
@@ -146,14 +146,14 @@ node* Fibonacci_heap::RemoveMin(){
 	node* temp = root;
 	if(root->child!=NULL){
 		// cout << "Child is " << root->child->data << endl;
-		// cout << "Child exists-merge lists" << endl;
+		cout << "Child exists-merge lists" << endl;
 		// cout << temp->data << " ";
 		while(temp->right!=root){
 			temp = temp->right;
 			rootend = temp; 
 			// cout << temp->data << " ";
 		}
-		// cout << "Find rootend " << root->data << " " << rootend->data << endl;
+		cout << "Find rootend " << root->data << " " << rootend->data << endl;
 		temp = root->child;
 		child->parent = NULL;
 		// cout << "child data is " << temp->data << " ";
@@ -168,8 +168,8 @@ node* Fibonacci_heap::RemoveMin(){
 			// }
 			
 		}
-		cout << endl;
-		// cout << "Find childend" << child->data << " " << childend->data << endl;
+		// cout << endl;
+		cout << "Find childend" << child->data << " " << childend->data << endl;
 		if(child==childend){
 			root->left = child;
 			child->right = root;
@@ -177,22 +177,27 @@ node* Fibonacci_heap::RemoveMin(){
 			childend->left = rootend;
 			// cout << "child list merged to top list" << endl;
 
-		} else {
+		} else if(root==rootend){
 			root->right = child;
 			child->left = root;
 			rootend->left = childend;
 			childend->right = rootend;
 			// cout << "child list merged to top list" << endl;
+		} else {
+			rootend->right=child;
+			child->left=rootend;
+			childend->right=root;
+			root->left=childend;
 		}
 	}
 
-	// node* t=root;
-	// cout << t->data << " ";
-	// while(t->right!=root){
-	// 	t = t->right;
-	// 	cout << t->data << " ";
-	// }
-	// cout << endl;
+	node* t=root;
+	cout << t->vertex << " ";
+	while(t->right!=root){
+		t = t->right;
+		cout << t->vertex << " ";
+	}
+	cout << endl;
 
 	r->left->right = r->right;  // Remove the min from the list.
 	r->right->left = r->left;
@@ -206,31 +211,51 @@ node* Fibonacci_heap::RemoveMin(){
 	return r;
 }
 
-node* Fibonacci_heap::Find(node* ptr, int vertex, int data){
+node* Fibonacci_heap::Find(node* ptr, int vertex){
+
+	// node* p=root;
+
+	// while(p!=NULL){
+	// 	if(p->vertex==vertex) {
+	// 		return p;
+	// 	}
+	// 	node* q;
+	// 	if(p->child!=NULL){
+	// 		q=p->child;
+	// 		while(q!=NULL){
+	// 			if(q->vertex==vertex){
+	// 				return q;
+	// 			}
+	// 			q=q->child;
+	// 		}
+	// 	}
+	// }
 	// cout<<"Entering Find"<< endl;
+
+	// node* t=ptr;
+	// cout << t->vertex << " ";
+	// while(t->right!=ptr){
+	// 	t = t->right;
+	// 	cout << t->vertex << " ";
+	// }
+	// cout << endl;
 	// cout << ptr->vertex << " " << ptr->data << endl;
 	if(ptr==NULL) return NULL;
 	ptr->mark = true;
-	if(ptr->data == data){
-		// cout << "data matches" << endl;
-		if(ptr->vertex == vertex){
-			// cout << "vertex also matches !!!" << endl;
-			ptr->mark=false;
-			return ptr;
-		}
-		// } else {
-		// 	return Find(ptr->right,vertex,data);
-		// }
+	if(ptr->vertex == vertex){
+		// cout << "Matches!!" << endl;
+		ptr->mark=false;
+		return ptr;
 	} 
 	node *p=NULL;
 	if(ptr->child!=NULL){
 		// cout << "Find in child tree" << endl;
-		p=Find(ptr->child,vertex,data);
+		p=Find(ptr->child,vertex);
 	} 
 	if(p==NULL){
 		// cout << "Check in right subtree" << endl;
 		if(ptr->right->mark!=true){
-			return Find(ptr->right,vertex,data);
+			p =  Find(ptr->right,vertex);
 		}
 		
 	}
@@ -242,10 +267,10 @@ void Fibonacci_heap::DecreaseKey(int vertex, int data, int newdata){
 	if(root==NULL) return;
 
 	// cout << "Find " << vertex << " " << data << endl;
-	node *ptr=Find(root,vertex,data);
+	node *ptr=Find(root,vertex);
 
 	if(ptr==NULL){
-		// cout << "Not found in the heap!!" << endl;
+		cout << "Not found in the heap!!" << endl;
 		return;
 	}
 
@@ -270,17 +295,27 @@ void Fibonacci_heap::DecreaseKey(int vertex, int data, int newdata){
 	}
 	// cout << "DecreaseKey done" << endl;
 
+	// node* t=root;
+	// cout << t->data << " ";
+	// while(t->right!=root){
+	// 	t = t->right;
+	// 	cout << t->data << " ";
+	// }
+	// cout << endl;
+
 }
 
 void Fibonacci_heap::Cut(node* ptr, node* par){
-	// cout << "Cut " << ptr->vertex << " from " << par->vertex << endl;
+	// cout << "Cut " << ptr->data << " from " << par->data << endl;
 	if(ptr->right==ptr){
 		par->child=NULL;
-	} else {
+	} 
+	ptr->left->right=ptr->right;
+	ptr->right->left = ptr->left;
+	if(ptr == par->child){
 		par->child=ptr->right;
-		ptr->left->right=ptr->right;
-		ptr->right->left = ptr->left;
 	}
+
 	par->degree--;
 
 	root->left->right=ptr;
@@ -293,11 +328,11 @@ void Fibonacci_heap::Cut(node* ptr, node* par){
 }
 
 void Fibonacci_heap::Cascade_Cut(node* ptr){
-	// cout << "Cascade_Cut " << ptr->vertex << endl;
+	// cout << "Cascade_Cut " << ptr->data << endl;
 	node *par=ptr->parent;
 	if(par!=NULL){
-		if(par->childcut==false){
-			par->childcut=true;
+		if(ptr->childcut==false){
+			ptr->childcut=true;
 		} else {
 			Cut(ptr,par);
 			Cascade_Cut(par);
@@ -306,7 +341,7 @@ void Fibonacci_heap::Cascade_Cut(node* ptr){
 }
 
 bool Fibonacci_heap::empty(){
-	if(root==NULL && num==0){
+	if(root==NULL){
 		return true;
 	} else {
 		return false;

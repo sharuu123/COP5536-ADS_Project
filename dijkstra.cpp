@@ -34,7 +34,7 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 		cout << "Relaxing node " << n->vertex << " " << n->data << endl;
 
 		if(n->vertex == des){
-			// find path
+			cout << "Trace path and return" << endl;
 			int temp=des;
 			// cout << temp << " ";
 			while(prev[temp]!=src){
@@ -47,17 +47,21 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 			break;
 		}
 
-		for(auto i : G[n->vertex]){
+		for(auto i : G[n->vertex]){  // update dist for neighbours
 
 			int newdist = dist[n->vertex] + i.second;
 			if(newdist < dist[i.first]){
 				cout << "Updating node " << i.first << " " << dist[i.first] << " with " 
 				<< newdist << endl;
 				fh.DecreaseKey(i.first,dist[i.first],newdist);
+				// node* n1=fh.Find(fh.root,i.first);
+				// cout << "Decreased node is " << n1->vertex << " " << n1->data << endl;
 				dist[i.first]=newdist;
 				prev[i.first]=n->vertex;
 			}
 		}
+
+		cout << "Relaxing Done" << endl;
 	}
 
 	// int temp=des;

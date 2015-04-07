@@ -44,7 +44,7 @@ class Fibonacci_heap{
 		// Helper Functions
 		void Link(node*,node*);
 		void Consolidate();
-		node* Find(node*,int,int);
+		node* Find(node*,int);
 		void Cut(node*, node*);
 		void Cascade_Cut(node*);
 
