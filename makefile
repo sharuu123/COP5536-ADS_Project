@@ -1,12 +1,21 @@
 CC = g++ -std=c++11 -O2 -g -Wno-deprecated -Wno-write-strings 
 
-all: ssp
+all: ssp routing
+
+routing: Fibonacci.o  dijkstra.o BinaryTrie.o routing.o
+	$(CC) -o routing Fibonacci.o  dijkstra.o BinaryTrie.o routing.o
 
 ssp: Fibonacci.o  dijkstra.o ssp.o
 	$(CC) -o ssp Fibonacci.o  dijkstra.o ssp.o
 
+routing.o: routing.cpp
+	$(CC) -c routing.cpp
+
 ssp.o: ssp.cpp
 	$(CC) -c ssp.cpp
+
+BinaryTrie.o: BinaryTrie.cpp
+	$(CC) -c BinaryTrie.cpp
 
 dijkstra.o: dijkstra.cpp
 	$(CC) -c dijkstra.cpp
