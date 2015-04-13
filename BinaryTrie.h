@@ -1,7 +1,6 @@
 #ifndef BINARY_TRIE_H
 #define BINARY_TRIE_H
 #include <iostream>
-#include <cmath>
 #include <vector>
 #include <unordered_map>
 

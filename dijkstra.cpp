@@ -18,17 +18,19 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 			dist[i.first]=INT_MAX;
 		}
 		count++;
+		if(count%100000==0) cout << "..";
 		// cout << "Inserting " << i.first << " " << dist[i.first] << endl;
 		fh.Insert(i.first,dist[i.first]);
 	}
-	// cout << "No of vertices = " << count << endl;
+	cout << "\nNo of vertices = " << count << endl;
 
 	while(!fh.empty()){
+		cout << "**";
 		node *n = fh.RemoveMin();
 		// cout << "Relaxing node " << n->vertex << " " << n->data << endl;
 
 		if(n->vertex == des){
-			// cout << "Trace path and return" << endl;
+			cout << "\nTrace path and return" << endl;
 			int temp=des;
 			// cout << temp << " ";
 			while(prev[temp]!=src){
@@ -41,7 +43,9 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 			break;
 		}
 
+		cout << "**";
 		for(auto i : G[n->vertex]){  // update dist for neighbours
+			cout << ".";
 
 			int newdist = dist[n->vertex] + i.second;
 			if(newdist < dist[i.first]){
@@ -57,5 +61,6 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 
 		// cout << "Relaxing Done" << endl;
 	}
+	cout << endl;
 	return path;
 }

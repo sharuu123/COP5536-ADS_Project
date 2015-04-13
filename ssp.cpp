@@ -78,6 +78,7 @@ int main(int argc, char *argv[]){
         G[a][b]=c;
         G[b][a]=c;
     }
+    cout << "Adding done" << endl;
 
      // cout << G[0][170] << endl;
 
@@ -86,6 +87,8 @@ int main(int argc, char *argv[]){
     int sval=0;
 
     spath = dijkstra(G,src,des);
+
+    cout << "dijkstra done" << endl;
 
     for(int i=0;i<spath.size()-1;i++){
     	int s=spath[i];
