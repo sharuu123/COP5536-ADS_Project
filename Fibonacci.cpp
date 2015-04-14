@@ -9,14 +9,14 @@ using namespace std;
 
 void Fibonacci_heap::Insert(int vertex, int dist){
 	if(root==NULL){	
-		// cout << "Inserting root " << dist << " " << dist << endl;			
+		// cout << "Inserting root " << vertex << " " << dist << endl;			
 		root = new node(vertex,dist);	// Allocate memory for root
 
 		root->left=root;
 		root->right=root;
 		num++;
 	} else {
-		// cout << "Inserting element " << dist << " " << dist << endl;
+		// cout << "Inserting element " << vertex << " " << dist << endl;
 		node* n = new node(vertex,dist); // Allocate memory for the element to be inserted
 
 		root->left->right = n;		// Insert node into root's doubly linked list
@@ -25,7 +25,7 @@ void Fibonacci_heap::Insert(int vertex, int dist){
 		root->left = n;
 
 		if(n->data < root->data){ // Change root if the inserted element is the minimum.
-			// cout << "changing root to " << dist << " " << dist << endl; 
+			// cout << "changing root to " << vertex << " " << dist << endl; 
 			root = n;
 		}
 		num++;
@@ -41,7 +41,7 @@ void Fibonacci_heap::Link(node* p2,node* p1){
 		p1->child = p2;
 		p2->left = p2;
 		p2->right = p2;
-	} else {
+	} else {				// Insert p2 into p1's child circular linked list
 		p2->right = p1->child;
 		p2->left = p1->child->left;
 		p1->child->left->right = p2;
@@ -61,7 +61,7 @@ void Fibonacci_heap::Consolidate(){
 	stack<node*> s;
 	s.push(r);
 	r=r->right;
-	while(r!=root){    		// Push all teh subtrees into a stack
+	while(r!=root){    		// Push all the subtrees into a stack
 		s.push(r);
 		r=r->right;
 	}

@@ -87,7 +87,7 @@ int main(int argc, char *argv[]){
     	s = line.substr(dot+1,line.size()-1);
         IP[count][3]=stoi(s);
      	count++;
-     	getline(myfile2,line);
+     	// getline(myfile2,line);
     } 
 
     // for(int i=0;i<n;i++){
