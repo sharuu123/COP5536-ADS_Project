@@ -1,20 +1,18 @@
 #ifndef BINARY_TRIE_H
 #define BINARY_TRIE_H
-#include <iostream>
-#include <vector>
 #include <unordered_map>
 
 using namespace std;
 
 struct tnode{
-	int hop;
-	int type;
+	int hop;		// stores next hop information if it is element node
+	int type;		// specifies whether node is branch node or element node
 	tnode* left;
 	tnode* right;
 	tnode* parent;
-	tnode(int x){
-		type=x;
-		hop=-1;
+	tnode(int x){	// Constructor
+		type=x;			
+		hop=-1;			
 		left=NULL;
 		right=NULL;
 		parent=NULL;
