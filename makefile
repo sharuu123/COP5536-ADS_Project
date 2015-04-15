@@ -1,4 +1,4 @@
-CC = g++ -std=c++11 -O2 -g -Wno-deprecated -Wno-write-strings 
+CC = g++ -std=c++0x -O2 -g -Wno-deprecated -Wno-write-strings 
 
 all: ssp routing
 
@@ -25,5 +25,6 @@ Fibonacci.o: Fibonacci.cpp
 
 clean:
 	rm -f ssp
+	rm -f routing
 	rm -f *.o
     
