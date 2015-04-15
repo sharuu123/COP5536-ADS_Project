@@ -25,13 +25,9 @@ node* Fibonacci_heap::Insert(int vertex, int dist){
 		n->left = root->left;
 		root->left = n;
 
-		if(n->data <= root->data){ // Change root if the inserted element is the minimum.
+		if(n->data < root->data){ // Change root if the inserted element is the minimum.
 			// cout << "changing root to " << vertex << " " << dist << endl; 
-			if(n->data==root->data && n->vertex < root->vertex){
 				root = n;
-			} else if(n->data < root->data){
-				root = n;
-			}
 		}
 		num++;
 		return n;
@@ -57,17 +53,77 @@ void Fibonacci_heap::Link(node* p2,node* p1){
 	p1->degree++; // Incriment the degree of p1
 }
 
-// void Fibonacci_heap::Consolidate(){
-// 	unordered_map<int,node*> mp;
-// 	int d;
+void Fibonacci_heap::Consolidate(){
+	unordered_map<int,node*> mp;
+	int d;
 
+	node* r=root;
+	node* p1 = root;
+
+	stack<node*> s;
+	s.push(r);
+	r=r->right;
+	while(r!=root){    		// Push all the subtrees into a stack
+		s.push(r);
+		r=r->right;
+	}
+
+	while(!s.empty()){
+		p1=s.top();
+		s.pop();
+		d=p1->degree;
+		// cout << "popped subtree is " << p1->data << " " << p1->degree << endl;
+		while(mp.count(d)!=0){  // Check if array contains any subtree with same degree
+			node* p2=mp[d];
+			if(p1->data > p2->data){
+				node* temp = p1;
+				p1 = p2;
+				p2 = temp;
+			// }
+			} 
+			// cout << "link " << p2->data << " " <<  p1->data << endl;
+			Link(p2,p1);	// Link subtree with root p2 to subtree with root p1
+			mp.erase(d);
+			d++;
+		}
+		mp[d]=p1;
+	}
+	root = NULL;
+	for(auto i:mp){
+		if(root==NULL){
+			root = i.second;
+			root->left = root;
+			root->right = root;
+			// cout << "new root = " << root->data << endl;
+		} else {
+			i.second->right = root;
+			i.second->left = root->left;
+			root->left->right = i.second;
+			root->left = i.second;
+			if(i.second->data < root->data){
+					root = i.second;
+				// cout << "Updated root = " << root->data << endl;
+			}
+		}
+	}
+
+}
+
+// void Fibonacci_heap::Consolidate(){
+// 	// cout << "Start consolidate" << endl;
+// 	int D = 1+(int)(log(num)/log(2)); // Possible number of degrees with num elements
+// 	int d;
+// 	node* A[D];
+// 	for(int i=0;i<=D;i++){
+// 		A[i]=NULL;
+// 	}
 // 	node* r=root;
 // 	node* p1 = root;
 
 // 	stack<node*> s;
 // 	s.push(r);
 // 	r=r->right;
-// 	while(r!=root){    		// Push all the subtrees into a stack
+// 	while(r!=root){    		// Push all teh subtrees into a stack
 // 		s.push(r);
 // 		r=r->right;
 // 	}
@@ -77,8 +133,8 @@ void Fibonacci_heap::Link(node* p2,node* p1){
 // 		s.pop();
 // 		d=p1->degree;
 // 		// cout << "popped subtree is " << p1->data << " " << p1->degree << endl;
-// 		while(mp.count(d)!=0){  // Check if array contains any subtree with same degree
-// 			node* p2=mp[d];
+// 		while(A[d]!=NULL){  // Check if array contains any subtree with same degree
+// 			node* p2=A[d];
 // 			if(p1->data > p2->data){
 // 				node* temp = p1;
 // 				p1 = p2;
@@ -95,118 +151,46 @@ void Fibonacci_heap::Link(node* p2,node* p1){
 // 			// if(p1->right==p1){
 // 			// 	root=p1;
 // 			// }
-// 			mp.erase(d);
+// 			A[d]=NULL;
 // 			d++;
 // 		}
-// 		mp[d]=p1;
+// 		A[d]=p1;
 // 	}
+
+// 	// cout << "Linking done - update root" << endl;
 // 	root = NULL;
-// 	for(auto i:mp){
-// 		if(root==NULL){
-// 			root = i.second;
-// 			root->left = root;
-// 			root->right = root;
-// 			// cout << "new root = " << root->data << endl;
-// 		} else {
-// 			i.second->right = root;
-// 			i.second->left = root->left;
-// 			root->left->right = i.second;
-// 			root->left = i.second;
-// 			if(i.second->data <= root->data){
-// 				if(i.second->data==root->data && i.second->vertex < root->vertex){
-// 					root = i.second;
-// 				} else if(i.second->data < root->data){
-// 					root = i.second;
+// 	for(int i=0;i<=D;i++){ // Update the root with proper node
+// 		if(A[i]!=NULL){
+// 			if(root==NULL){
+// 				root = A[i];
+// 				root->left = root;
+// 				root->right = root;
+// 				// cout << "new root = " << root->data << endl;
+// 			} else {
+// 				A[i]->right = root;
+// 				A[i]->left = root->left;
+// 				root->left->right = A[i];
+// 				root->left = A[i];
+// 				if(A[i]->data <= root->data){
+// 					if(A[i]->data==root->data && A[i]->vertex < root->vertex){
+// 						root=A[i];
+// 					} else if(A[i]->data < root->data){
+// 						root=A[i];
+// 					}
+// 					// cout << "Updated root = " << root->data << endl;
 // 				}
-// 				// cout << "Updated root = " << root->data << endl;
 // 			}
 // 		}
 // 	}
+// 	// node* t=root;
+// 	// cout << t->vertex << " ";
+// 	// while(t->right!=root){
+// 	// 	t = t->right;
+// 	// 	cout << t->vertex << " ";
+// 	// }
+// 	// cout << endl;
 
 // }
-
-void Fibonacci_heap::Consolidate(){
-	// cout << "Start consolidate" << endl;
-	int D = 1+(int)(log(num)/log(2)); // Possible number of degrees with num elements
-	int d;
-	node* A[D];
-	for(int i=0;i<=D;i++){
-		A[i]=NULL;
-	}
-	node* r=root;
-	node* p1 = root;
-
-	stack<node*> s;
-	s.push(r);
-	r=r->right;
-	while(r!=root){    		// Push all teh subtrees into a stack
-		s.push(r);
-		r=r->right;
-	}
-
-	while(!s.empty()){
-		p1=s.top();
-		s.pop();
-		d=p1->degree;
-		// cout << "popped subtree is " << p1->data << " " << p1->degree << endl;
-		while(A[d]!=NULL){  // Check if array contains any subtree with same degree
-			node* p2=A[d];
-			if(p1->data > p2->data){
-				node* temp = p1;
-				p1 = p2;
-				p2 = temp;
-			} else {
-				if(p1->vertex > p2->vertex && p1->data==p2->data){
-					node* temp = p1;
-					p1 = p2;
-					p2 = temp;
-				}
-			}
-			// cout << "link " << p2->data << " " <<  p1->data << endl;
-			Link(p2,p1);	// Link subtree with root p2 to subtree with root p1
-			// if(p1->right==p1){
-			// 	root=p1;
-			// }
-			A[d]=NULL;
-			d++;
-		}
-		A[d]=p1;
-	}
-
-	// cout << "Linking done - update root" << endl;
-	root = NULL;
-	for(int i=0;i<=D;i++){ // Update the root with proper node
-		if(A[i]!=NULL){
-			if(root==NULL){
-				root = A[i];
-				root->left = root;
-				root->right = root;
-				// cout << "new root = " << root->data << endl;
-			} else {
-				A[i]->right = root;
-				A[i]->left = root->left;
-				root->left->right = A[i];
-				root->left = A[i];
-				if(A[i]->data <= root->data){
-					if(A[i]->data==root->data && A[i]->vertex < root->vertex){
-						root=A[i];
-					} else if(A[i]->data < root->data){
-						root=A[i];
-					}
-					// cout << "Updated root = " << root->data << endl;
-				}
-			}
-		}
-	}
-	// node* t=root;
-	// cout << t->vertex << " ";
-	// while(t->right!=root){
-	// 	t = t->right;
-	// 	cout << t->vertex << " ";
-	// }
-	// cout << endl;
-
-}
 
 node* Fibonacci_heap::RemoveMin(){
 	// cout << "RemoveMin" << endl;
@@ -333,23 +317,9 @@ void Fibonacci_heap::DecreaseKey(node* ptr, int newdata){
 		Cascade_Cut(par);
 	}
 
-	if(ptr->data <= root->data){
-		if(ptr->data == root->data && ptr->vertex < root->vertex){
+	if(ptr->data < root->data){
 			root=ptr;
-		} else if (ptr->data < root->data){
-			root=ptr;
-		}
 	}
-	// cout << "DecreaseKey done" << endl;
-
-	// node* t=root;
-	// cout << t->data << " ";
-	// while(t->right!=root){
-	// 	t = t->right;
-	// 	cout << t->data << " ";
-	// }
-	// cout << endl;
-
 }
 
 void Fibonacci_heap::DecreaseKey(int vertex, int data, int newdata){

@@ -24,28 +24,12 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 			addr[i]=fh.Insert(i,INT_MAX);
 		}
 		count++;
-	}
-	if(fh.Treechecker()==false){
-		cout << "tree is not proper" << endl;
 	} 
-	// for(auto i : G){			// Initialization 
-	// 	if(i.first == src){
-	// 		dist[i.first]=0;	// for source dist=0
-	// 		fh.Insert(i.first,0);
-	// 	} else {
-	// 		dist[i.first]=INT_MAX;
-	// 		fh.Insert(i.first,INT_MAX);
-	// 	}
-	// 	count++;
-	// 	if(count%100000==0) cout << "..";
-	// 	// cout << "Inserting " << i.first << " " << dist[i.first] << endl;
-	// 	// fh.Insert(i.first,dist[i.first]);
-	// }
-	cout << "\nNo of vertices = " << count << endl;
-	int x=0;
+
+	// int x=0;
 	while(!fh.empty()){
 		// cout << "**";
-		cout << ++x << endl;
+		// cout << ++x << endl;
 		node *n = fh.RemoveMin();
 		// if(fh.Treechecker()==false){
 		// 	cout << "remove min " << n->data << endl;
@@ -55,7 +39,7 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 		// cout << "Relaxing node " << n->vertex << " " << n->data << endl;
 
 		if(n->vertex == des){
-			cout << "\nTrace path and return" << endl;
+			// cout << "\nTrace path and return" << endl;
 			int temp=des;
 			// cout << temp << " ";
 			while(prev[temp]!=src){

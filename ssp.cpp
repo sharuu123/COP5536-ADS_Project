@@ -28,17 +28,11 @@ int main(int argc, char *argv[]){
         G[a][b]=c;
         G[b][a]=c;
     }
-    cout << "Adding done" << endl;
-
-     // cout << G[0][170] << endl;
-
 
     vector<int> spath;
     int sval=0;
 
     spath = dijkstra(G,src,des);
-
-    cout << "dijkstra done" << endl;
 
     for(int i=0;i<spath.size()-1;i++){
     	int s=spath[i];
@@ -52,14 +46,6 @@ int main(int argc, char *argv[]){
     	cout << spath[i] << " ";
     }
     cout << endl;
-
-    // for(unordered_map<int, unordered_map<int,int>>::iterator it1 = G.begin();
-    // 	 it1 != G.end(); it1++){
-    // 	for(unordered_map<int,int>::iterator it2 = it1->second.begin();
-    // 		it2 != it1->second.end(); it2++){
-    // 		cout << it1->first << " " << it2->first << " " << it2->second << endl;
-    // 	}
-    // }
 
 	return 0;
 }
