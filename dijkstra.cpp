@@ -1,44 +1,34 @@
 
 #include <iostream>
+#include <ctime>
 #include "dijkstra.h"
 
 using namespace std;
 
 vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int des){
-// vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int des){
+	int* dist = new int[G.size()];  // array to store minimun distances from source
+	int* prev = new int[G.size()];	// array to store parent nodes 
 
-	// unordered_map<int,int> dist; // distances to source from different nodes
-	// unordered_map<int,int> prev; // map to previous node in shortest path
-	int* dist = new int[G.size()];
-	int* prev = new int[G.size()];
-	unordered_map<int,node*> addr;
-	Fibonacci_heap fh;
-	vector<int> path;
+	unordered_map<int,node*> addr;  // map to store address after insertion into heap
+	Fibonacci_heap fh;				// fibonacci heap to store min distances
+	vector<int> path;				// vector to store shortest path
+
 	int count=0;
-	for(int i=0;i<G.size();i++){
+	for(int i=0;i<G.size();i++){	// Intialize the nodes with starting min distances
 		if(i==src){
-			dist[i]=0;
+			dist[i]=0;				// for source min distance = 0
 			addr[i]=fh.Insert(i,0);
 		} else {
-			dist[i]=INT_MAX;
+			dist[i]=INT_MAX;		// for other nodes, min distance = INT_MAX
 			addr[i]=fh.Insert(i,INT_MAX);
 		}
 		count++;
 	} 
 
-	// int x=0;
 	while(!fh.empty()){
-		// cout << "**";
-		// cout << ++x << endl;
-		node *n = fh.RemoveMin();
-		// if(fh.Treechecker()==false){
-		// 	cout << "remove min " << n->data << endl;
-		// 	cout << "tree is not proper" << endl;
-		// 	// exit(-1);
-		// }
-		// cout << "Relaxing node " << n->vertex << " " << n->data << endl;
+		node *n = fh.RemoveMin();	// extract the minimum element
 
-		if(n->vertex == des){
+		if(n->vertex == des){		// if extracted element is des, stop relaxing
 			// cout << "\nTrace path and return" << endl;
 			int temp=des;
 			// cout << temp << " ";
@@ -52,31 +42,17 @@ vector<int> dijkstra(unordered_map<int, unordered_map<int,int>> &G, int src, int
 			break;
 		}
 
-		// cout << "**";
-		for(auto i : G[n->vertex]){  // update dist for neighbours
-			// cout << ".";
+		for(auto i : G[n->vertex]){  // relax the neighbours
 
 			int newdist = dist[n->vertex] + i.second;
-			if(newdist < dist[i.first]){
-				// cout << "Updating node " << i.first << " " << dist[i.first] << " with " 
-				// << newdist << endl;
+			if(newdist < dist[i.first]){ // decrease the min distance if found new path
+
 				fh.DecreaseKey(addr[i.first],newdist);
-				// fh.DecreaseKey(i.first,dist[i.first],newdist);
-				// if(fh.Treechecker()==false){
-				// 	cout << "Updating node " << i.first << " " << dist[i.first] << " with " 
-				// 	<< newdist << endl;
-				// 	cout << "tree is not proper" << endl;
-				// 	// exit(-1);
-				// }
-				// node* n1=fh.Find(fh.root,i.first);
-				// cout << "Decreased node is " << n1->vertex << " " << n1->data << endl;
-				dist[i.first]=newdist;
-				prev[i.first]=n->vertex;
+				dist[i.first]=newdist;		// update new min distance
+				prev[i.first]=n->vertex;	// update the parent node
 			}
 		}
 
-		// cout << "Relaxing Done" << endl;
 	}
-	cout << endl;
 	return path;
 }

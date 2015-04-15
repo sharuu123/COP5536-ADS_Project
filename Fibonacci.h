@@ -37,20 +37,13 @@ class Fibonacci_heap{
 		}
 		node* Insert(int,int);
 		node* RemoveMin();
-		// void Meld(node*,node*);
-		// void Remove(node*);
-		void DecreaseKey(int,int,int);
 		void DecreaseKey(node*,int);
 		bool empty();
 		// Helper Functions
 		void Link(node*,node*);
 		void Consolidate();
-		node* Find(node*,int,int);
 		void Cut(node*, node*);
 		void Cascade_Cut(node*);
-		bool Treechecker();
-		bool checker(node*,int,int);
-
 };
 
 #endif
